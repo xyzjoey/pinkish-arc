@@ -1,4 +1,4 @@
-function collideCircles(center1, radius1, center2, radius2, allowOverlap=false, kinematic1=true, kinematic2=true) {
+function collideCircles(center1, radius1, center2, radius2, allowOverlap=false) {
     let results = {
         isCollide: false,
         translation1: null, // vector to move circle1 away to avoid overlap

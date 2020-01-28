@@ -1,5 +1,6 @@
 // scene settings
-const CAMERA_ZOOM_INITIAL = window.screen.width * window.screen.height / 30000; // window.innerWidth * window.innerHeight * 0.1
+const PIXEL_RATIO = THREE.Math.clamp(1000 / (0.5 * (window.screen.width + window.screen.height)), 0, 1);
+const CAMERA_ZOOM_INITIAL = 0.5 * (window.screen.width + window.screen.height) / 25; // window.innerWidth * window.innerHeight * 0.1
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 1000;
 const BACKGROUND_COLOR = 0xffffff;
@@ -37,17 +38,13 @@ var enemies = null; // array
 var lines = null; // array
 
 var ui_hpBar = null;
+var ui_startScreen = null;
 var ui_gameoverScreen = null;
 
 var enemyDestroyedNum = null;
 var hitNum = null;
 
 var enemyInvokeIntervalTimer = null;
-
-// var mouse = null;
-// var isMouseDown = { left: false, right: false };
-
-// var arrowDebuger = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 1, 0x000000);
 
 function getSceneWidth() { return window.innerWidth/CAMERA_ZOOM_INITIAL; }
 function getSceneHeight() { return window.innerHeight/CAMERA_ZOOM_INITIAL; }
@@ -91,7 +88,7 @@ function removeEnemies() {
     let removedNum = 0;
     for (let i = enemies.length - 1; i >= 0; --i) {
         if (enemies[i].state === Enemy.STATES.DESTROYED) {
-            scene.remove(scene.getObjectByName(enemies[i].name));
+            scene.remove(enemies[i].object3d);
             enemies.splice(i, 1);
             ++removedNum;
         }
@@ -119,7 +116,7 @@ function removeLines() {
     // remove finished lines
     for (let i = lines.length - 1; i >= 0; --i) {
         if (lines[i].state === Line.STATES.ENDED) {
-            scene.remove(scene.getObjectByName(lines[i].name));
+            scene.remove(lines[i].object3d);
             lines.splice(i, 1);
         }
     }
@@ -150,6 +147,7 @@ function initializeScene() {
         antialias: true,
     });
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setPixelRatio(PIXEL_RATIO);
     renderer.setClearColor( BACKGROUND_COLOR, BACKGROUND_ALPHA);
     document.body.appendChild( renderer.domElement );
 }
@@ -244,6 +242,7 @@ function collisionDetection()
     const playerV2 = player.vertex2World;
     for (let i = 0; i < enemies.length; ++i) {
         // if (!enemies[i].isActive) continue;
+        if (!collideCircles(player.position, player.boundingRadius, enemies[i].position, enemies[i].radius, allowOverlap=true).isCollide) continue;
 
         const {isCollide, circleTranslation} = collideTriangleCircle(playerV0, playerV1, playerV2, enemies[i].position, enemies[i].radius);
         if (!isCollide) continue;
@@ -324,7 +323,6 @@ function updateGame() {
 
     // remove destroyed enemies
     enemyDestroyedNum += removeEnemies();
-    // console.log(enemyDestroyedNum);
 
     // check gameover
     if (isGameover()) gameover();
@@ -337,12 +335,15 @@ function update() {
 
     updateGame();
 
-    // render
+    rerender();
+};
+
+function rerender() {
     renderer.autoClear = true;
     renderer.render(scene, camera);
     renderer.autoClear = false;
     renderer.render(sceneUI, cameraUI);
-};
+}
 
 function isGameover() {
     return player.hp <= 0;
@@ -350,7 +351,6 @@ function isGameover() {
 
 function gamestart() {
 
-    initializeScene();
     initializeGameobjects();
     initializeUIobjects();
     initializeEventListeners();
@@ -373,8 +373,8 @@ function gameover() {
         }
     }
 
-    // set screen
-    ui_gameoverScreen = new GameoverScreen(getSceneWidth(), getSceneHeight());
+    // set gameover screen
+    ui_gameoverScreen = new UICanvas(getSceneWidth(), getSceneHeight(), 0x000000, 0.7);
     ui_gameoverScreen.addText("YOU DIED", 1, 0xEE214D, 1);
     ui_gameoverScreen.addText("Kill: " + enemyDestroyedNum, 0.5, 0xffffff, -1);
     ui_gameoverScreen.addText("Hit: " + hitNum, 0.5, 0xffffff, -2);
@@ -386,12 +386,13 @@ function gameover() {
 // }
 
 function main() {
+    initializeScene();
     gamestart();
 }
 
 main();
 
 //TODO
-// zoom camera scroll, clip
-// font file
+// remove warning
 // start screen
+// bounding circle

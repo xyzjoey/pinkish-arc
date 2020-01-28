@@ -1,8 +1,7 @@
 // const GAME_UI_Z = 0.5;
 // const MENU_UI_Z = 
-// const TEXT_Z
 const HP_COLOR = 0xff0000
-// const FONTPATH = "fonts/helvetiker_regular.typeface.json";
+// const FONTPATH = "fonts/helvetiker_bold.typeface.json"; // https://github.com/mrdoob/three.js/tree/master/examples/fonts
 const FONTPATH = "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json";
 const HORIZONTAL_ALIGN = {
     LEFT: 0,
@@ -14,6 +13,10 @@ const VERTICAL_ALIGN = {
     CENTER: 1,
     BOTTOM: 2,
 };
+
+// load font
+var font = null;
+new THREE.FontLoader().load(FONTPATH, (ft) => { font = ft; });
 
 class UIBar {
     constructor(pos, width, height, color, horizontalAlign=null, verticalAlign=null) {
@@ -106,14 +109,13 @@ class UIPlane {
     }
 
     updateMeshSize() {
-        console.log('scale');
         this.object3d.scale.set(this.width, this.height, 1);
     }
 }
 
-class GameoverScreen {
-    constructor(width, height) {
-        this.background = new UIPlane(width, height, 0x000000, 0.7);
+class UICanvas {
+    constructor(width, height, backgroundColor, backgroundAlpha) {
+        this.background = new UIPlane(width, height, backgroundColor, backgroundAlpha);
         this.object3d = this.createMesh();
     }
 
@@ -137,25 +139,30 @@ class GameoverScreen {
     }
 
     addTextMesh(text, fontsize, color, pos) {
-        let loader = new THREE.FontLoader();
-        loader.load(FONTPATH, (font) => {
-            let geometry = new THREE.TextGeometry( text, {
-                font: font,
-                size: fontsize,
-                height: 0.1,
-                curveSegments: 3,
-            });
-            geometry.center();
-            let material = new THREE.MeshBasicMaterial({
-                color: color,
-            });
-            let textMesh = new THREE.Mesh(geometry, material);
-            textMesh.position.set(pos.x, pos.y, 1);
-            this.textMeshes.add(textMesh);
+        let geometry = new THREE.TextGeometry( text, {
+            font: font,
+            size: fontsize,
+            height: 0.1,
+            curveSegments: 3,
         });
+        geometry.center();
+        let material = new THREE.MeshBasicMaterial({
+            color: color,
+        });
+        let textMesh = new THREE.Mesh(geometry, material);
+        textMesh.position.set(pos.x, pos.y, 1);
+        this.textMeshes.add(textMesh);
     }
 
     setBackgroundSize(width, height) {
         this.background.setSize(width, height);
     }
+
+    // addObject(object3d) {
+    //     this.object3d.add(object3d);
+    // }
+
+    // getObject(name) {
+    //     return this.object3d.getObjectByName(name);
+    // }
 }

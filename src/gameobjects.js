@@ -71,7 +71,8 @@ class Player {
     get vertex0World() { return this.up.clone().multiplyScalar(2/3).add(this.position); }
     get vertex1World() { return this.up.clone().multiplyScalar(-1/3).add(this.right.clone().multiplyScalar(-0.4)).add(this.position); }
     get vertex2World() { return this.up.clone().multiplyScalar(-1/3).add(this.right.clone().multiplyScalar(0.4)).add(this.position); }
-
+    get boundingRadius() { return 0.7;} //
+    
     get mesh() { return this.object3d.children[0]; }
     get animationGroup() { return this.object3d.children[1]; }
 
