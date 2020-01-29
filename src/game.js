@@ -393,6 +393,7 @@ function main() {
 main();
 
 //TODO
+// remove scroll bar
 // remove warning
 // start screen
 // bounding circle

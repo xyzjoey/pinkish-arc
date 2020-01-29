@@ -1,8 +1,9 @@
 // const GAME_UI_Z = 0.5;
 // const MENU_UI_Z = 
 const HP_COLOR = 0xff0000
+const FONTPATH = window.location.href + "fonts/helvetiker_bold.typeface.json";
 // const FONTPATH = "fonts/helvetiker_bold.typeface.json"; // https://github.com/mrdoob/three.js/tree/master/examples/fonts
-const FONTPATH = "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json";
+// const FONTPATH = "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json";
 const HORIZONTAL_ALIGN = {
     LEFT: 0,
     CENTER: 1,
@@ -139,6 +140,11 @@ class UICanvas {
     }
 
     addTextMesh(text, fontsize, color, pos) {
+        if (font === null) {
+            setTimeout(()=> { this.addTextMesh(text, fontsize, color, pos); }, 10);
+            return;
+        }
+
         let geometry = new THREE.TextGeometry( text, {
             font: font,
             size: fontsize,

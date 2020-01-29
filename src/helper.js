@@ -21,10 +21,6 @@ function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function lerpColor(hex1, hex2, t) {
-    // r1 = 
-}
-
 // function vecAngle(v1, v2) {
 //     return v1.clone().normalize().dot(v2.clone().normalize())
 // }
