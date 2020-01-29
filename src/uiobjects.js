@@ -1,8 +1,8 @@
 // const GAME_UI_Z = 0.5;
 // const MENU_UI_Z = 
 const HP_COLOR = 0xff0000
-// const FONTPATH = "fonts/helvetiker_bold.typeface.json"; // https://github.com/mrdoob/three.js/tree/master/examples/fonts
-const FONTPATH = "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json";
+const FONTPATH = "../fonts/helvetiker_bold.typeface.json"; // https://github.com/mrdoob/three.js/tree/master/examples/fonts
+// const FONTPATH = "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json";
 const HORIZONTAL_ALIGN = {
     LEFT: 0,
     CENTER: 1,
