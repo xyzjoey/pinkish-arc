@@ -3,6 +3,7 @@ A 2D mini game by Three.js
 
 ## Demo
 https://xyzjoey.github.io/pinkish-arc/
+requirement: PC, chrome
 
 ## Description
 Goal: Destroy as many enemies as possible
