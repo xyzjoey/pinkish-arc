@@ -2,7 +2,7 @@
 A 2D mini game by Three.js
 
 ## Demo
-https://xyzjoey.github.io/pinkish-arc/
+https://xyzjoey.github.io/pinkish-arc/ </br>
 requirement: PC, chrome
 
 ## Description
