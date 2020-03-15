@@ -6,7 +6,8 @@ https://xyzjoey.github.io/pinkish-arc/ </br>
 requirement: PC, chrome
 
 ## Description
-Goal: Destroy as many enemies as possible
+Goal: Destroy as many enemies as possible before HP is 0
+Gameover: When the player has touched enemies for too many times, HP is reduced to 0 and game is over
 
 <table>
 <tr>
